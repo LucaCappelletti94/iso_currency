@@ -25,3 +25,16 @@ jobs:
           toolchain: stable
           command: build
           args: --release --all-features
+
+  build_no_std:
+    name: Build without std
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest
+        uses: actions/checkout@master
+      - name: Install thumbv7em-none-eabihf target
+        run: rustup target add thumbv7em-none-eabihf
+      - name: Cargo build without std
+        run: cargo build --no-default-features --target thumbv7em-none-eabihf
+      - name: Cargo build without std, with serde and iterator
+        run: cargo build --no-default-features --features with-serde,iterator --target thumbv7em-none-eabihf

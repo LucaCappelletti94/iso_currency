@@ -26,6 +26,16 @@ The crate has some optional features:
 - `with-sqlx-postgres`
 - `with-sqlx-mysql`
 
+### std
+
+Enabled by default. Without it the crate is `no_std` and needs only `core` and `alloc`, so it builds for targets without the standard library as long as they provide an allocator:
+
+```toml
+iso_currency = { version = "0.7", default-features = false }
+```
+
+`with-serde` and `iterator` work without `std`. `with-schemars`, `with-specta` and the `with-sqlx-*` features enable `std`.
+
 ### with-serde
 
 If you need serialization/deserialization support using `serde` you should include the feature in your dependency on `iso_currency`.

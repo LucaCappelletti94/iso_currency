@@ -34,6 +34,14 @@
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(not(any(feature = "std", test)), no_std)]
+
+extern crate alloc;
+
+use alloc::borrow::ToOwned;
+use alloc::string::String;
+use alloc::vec;
+use alloc::vec::Vec;
 
 pub use iso_country::Country;
 
@@ -61,22 +69,26 @@ pub struct CurrencySymbol {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ParseCurrencyError;
 
-impl std::fmt::Display for ParseCurrencyError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+impl core::fmt::Display for ParseCurrencyError {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "not a valid ISO 4217 currency code")
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ParseCurrencyError {}
 
-impl std::fmt::Debug for CurrencySymbol {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+#[cfg(not(feature = "std"))]
+impl core::error::Error for ParseCurrencyError {}
+
+impl core::fmt::Debug for CurrencySymbol {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "{}", self.symbol)
     }
 }
 
-impl std::fmt::Display for CurrencySymbol {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+impl core::fmt::Display for CurrencySymbol {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "{}", self.symbol)
     }
 }
@@ -95,19 +107,19 @@ impl CurrencySymbol {
     }
 }
 
-impl std::fmt::Debug for Currency {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+impl core::fmt::Debug for Currency {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "{}", self.code())
     }
 }
 
-impl std::fmt::Display for Currency {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+impl core::fmt::Display for Currency {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "{}", self.name())
     }
 }
 
-impl std::str::FromStr for Currency {
+impl core::str::FromStr for Currency {
     type Err = ParseCurrencyError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {

@@ -4,6 +4,7 @@ description = "ISO 4217 currency codes"
 version = "0.7.1"
 authors = ["Rostislav Raykov <z@zbrox.org>"]
 edition = "2018"
+resolver = "2"
 license = "MIT"
 repository = "https://github.com/zbrox/iso_currency"
 documentation = "https://docs.rs/iso_currency/"
@@ -12,20 +13,21 @@ readme = "README.md"
 keywords = ["currency", "iso", "iso-4217", "iso4217"]
 
 [features]
-default = []
+default = ["std"]
+std = ["iso_country/std", "serde?/std", "strum?/std"]
 with-serde = ["dep:serde"]
 iterator = ["dep:strum"]
-with-schemars = ["dep:schemars", "with-serde"]
-with-sqlx-sqlite = ["dep:sqlx", "sqlx/sqlite"]
-with-sqlx-postgres = ["dep:sqlx", "sqlx/postgres"]
-with-sqlx-mysql = ["dep:sqlx", "sqlx/mysql"]
-with-specta = ["dep:specta", "with-serde"]
+with-schemars = ["dep:schemars", "with-serde", "std"]
+with-sqlx-sqlite = ["dep:sqlx", "sqlx/sqlite", "std"]
+with-sqlx-postgres = ["dep:sqlx", "sqlx/postgres", "std"]
+with-sqlx-mysql = ["dep:sqlx", "sqlx/mysql", "std"]
+with-specta = ["dep:specta", "with-serde", "std"]
 
 [dependencies]
-iso_country = "0.1.4"
+iso_country = { version = "0.1.4", default-features = false }
 schemars = { version = "1.2.1", optional = true }
-serde = { version = "1.0.127", optional = true, features = ["derive"] }
-strum = { version = "0.27.1", optional = true, features = ["derive"] }
+serde = { version = "1.0.127", optional = true, default-features = false, features = ["derive"] }
+strum = { version = "0.27.1", optional = true, default-features = false, features = ["derive"] }
 sqlx = { version = ">0.7", optional = true }
 specta = { version = "2.0.0-rc.25", features = ["derive"], optional = true }
 
